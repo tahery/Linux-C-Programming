@@ -27,8 +27,8 @@ int main(void)
 	fd_set rfd_set, wfd_set, efd_set;
 
 	struct timeval timeout;
-
 	int ret;
+
 	if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) == -1)
 	{
 		perror("socket");
@@ -46,6 +46,7 @@ int main(void)
 	fcntl(sockfd, F_SETFD, O_NONBLOCK);
 	printf("Let others' know your name to start chat!\n");
 	scanf("%s", name);
+	name[strlen(name)] = '\0';
 	fflush(stdout);
 	send(sockfd, name, strlen(name), 0);
 

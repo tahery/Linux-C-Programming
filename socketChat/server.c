@@ -97,28 +97,28 @@ int main(void)
 				close(sockfd);
 				exit(0);
 			}
-		}
 		send(client_fd, send_str, strlen(send_str), 0);
-	}
+		}
+		
+		if (FD_ISSET(client_fd, &rfd_set))
+		{
+			recvbytes = recv(client_fd, buf, MAXDATASIZE, 0);
+			if (recvbytes == 0)
+			{
+				close(client_fd);
+				close(sockfd);
+				exit(0);
+			}
+			buf[recvbytes] = '\0';
+			printf("%s:%s\n", buff, buf);
+			printf("Server:\n");
+			fflush(stdout);
+		}
 
-	if (FD_ISSET(client_fd, &rfd_set))
-	{
-		recvbytes = recv(client_fd, buf, MAXDATASIZE, 0);
-		if (recvbytes == 0)
+		if (FD_ISSET(client_fd, &efd_set))
 		{
 			close(client_fd);
-			close(sockfd);
 			exit(0);
 		}
-		buf[recvbytes] = '\0';
-		printf("%s:%s\n", buff, buf);
-		printf("Server:\n");
-		fflush(stdout);
-	}
-
-	if (FD_ISSET(client_fd, &efd_set))
-	{
-		close(client_fd);
-		exit(0);
-	}
+	}	
 }
